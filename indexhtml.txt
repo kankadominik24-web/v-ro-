@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegantní hádanka</title>
+    <style>
+        /* Moderní reset a font */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Hlavní karta */
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        h1 { font-size: 1.5rem; margin-bottom: 1.5rem; color: #1a1a1a; font-weight: 600; }
+
+        /* Vstupní pole */
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        input:focus { border-color: #007bff; }
+
+        /* Tlačítko */
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #333; }
+
+        /* Skrytá zpráva s animací */
+        #result {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #28a745;
+            font-weight: 500;
+            line-height: 1.5;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error { color: #dc3545; font-size: 0.85rem; margin-top: -0.5rem; margin-bottom: 1rem; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Vyřeš hádanku</h1>
+        
+        <input type="text" id="wordInput" placeholder="Zadej klíčové slovo..." autocomplete="off">
+        <p id="errorMsg" class="error">Zkus to znovu, tohle není ono.</p>
+        
+        <button onclick="checkWord()">Ověřit</button>
+
+        <div id="result">
+            Gratuluji, hádanka je za tebou. <br>
+            <strong>A další před tebou :)</strong>
+        </div>
+    </div>
+
+    <script>
+        function checkWord() {
+            const input = document.getElementById('wordInput');
+            const result = document.getElementById('result');
+            const error = document.getElementById('errorMsg');
+            
+            // Převede vstup na malá písmena a odstraní mezery
+            const value = input.value.trim().toLowerCase();
+
+            if (value === "heslo") {
+                // Skryje chybu a ukáže úspěch
+                error.style.display = 'none';
+                result.style.display = 'block';
+                input.style.borderColor = '#28a745';
+                
+                // Volitelné: znemožní další psaní po úspěchu
+                input.disabled = true;
+                document.querySelector('button').disabled = true;
+                document.querySelector('button').style.opacity = '0.5';
+            } else {
+                // Ukáže chybu
+                error.style.display = 'block';
+                input.style.borderColor = '#dc3545';
+                result.style.display = 'none';
+            }
+        }
+
+        // Umožní odeslání stiskem klávesy Enter
+        document.getElementById('wordInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkWord();
+            }
+        });
+    </script>
+
+</body>
+</html>
